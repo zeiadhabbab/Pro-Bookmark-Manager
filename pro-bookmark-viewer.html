@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Bookmark Manager</title>
+    <!-- Core styles for the bookmark viewer UI -->
+    <link rel="stylesheet" href="pro-bookmark-viewer.css">
+    <!-- Inter font for clean, modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for icons used across the UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Settings Modal: manage grid size, default engine, visibility, and animations -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> <span data-i18n="modal.settings.title">Settings</span></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="gridSize" data-i18n="settings.gridSize">Grid Size:</label>
+                    <select id="gridSize">
+                        <option value="small" data-i18n="settings.gridSmall">Small</option>
+                        <option value="medium" selected data-i18n="settings.gridMedium">Medium</option>
+                        <option value="large" data-i18n="settings.gridLarge">Large</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="defaultSearchEngine" data-i18n="settings.defaultEngine">Default Search Engine:</label>
+                    <select id="defaultSearchEngine">
+                        <option value="google" selected data-i18n="settings.engine.google">Google</option>
+                        <option value="bing" data-i18n="settings.engine.bing">Bing</option>
+                        <option value="duckduckgo" data-i18n="settings.engine.duckduckgo">DuckDuckGo</option>
+                        <option value="yahoo" data-i18n="settings.engine.yahoo">Yahoo</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="showMostVisited" data-i18n="settings.showMostVisited">Show Most Visited:</label>
+                    <input type="checkbox" id="showMostVisited" checked>
+                </div>
+                <div class="setting-group">
+                    <label for="showRecentlyAdded" data-i18n="settings.showRecentlyAdded">Show Recently Added:</label>
+                    <input type="checkbox" id="showRecentlyAdded" checked>
+                </div>
+                <div class="setting-group">
+                    <label for="animationsEnabled" data-i18n="settings.animationsEnabled">Enable Animations:</label>
+                    <input type="checkbox" id="animationsEnabled" checked>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettings" class="btn btn-primary" data-i18n="settings.save">Save Settings</button>
+                <button id="resetSettings" class="btn btn-secondary" data-i18n="settings.reset">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bookmark Modal: create a new bookmark -->
+    <div id="addBookmarkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus"></i> <span data-i18n="modal.addBookmark.title">Add Bookmark</span></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="bookmarkTitle" data-i18n="modal.fields.title">Title:</label>
+                    <input type="text" id="bookmarkTitle" placeholder="Enter bookmark title" data-i18n-placeholder="modal.placeholders.title">
+                </div>
+                <div class="form-group">
+                    <label for="bookmarkUrl" data-i18n="modal.fields.url">URL:</label>
+                    <input type="url" id="bookmarkUrl" placeholder="https://example.com" data-i18n-placeholder="modal.placeholders.url">
+                </div>
+                <div class="form-group">
+                    <label for="bookmarkFolder" data-i18n="modal.fields.folder">Folder:</label>
+                    <select id="bookmarkFolder">
+                        <option value="" data-i18n="modal.fields.selectFolder">Select folder...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookmarkTags" data-i18n="modal.fields.tags">Tags (comma-separated):</label>
+                    <input type="text" id="bookmarkTags" placeholder="work, important, reference" data-i18n-placeholder="modal.placeholders.tags">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveBookmark" class="btn btn-primary" data-i18n="modal.addBookmark.save">Save Bookmark</button>
+                <button id="cancelBookmark" class="btn btn-secondary" data-i18n="common.cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Bookmark Modal: update or delete an existing bookmark -->
+    <div id="editBookmarkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> <span data-i18n="modal.editBookmark.title">Edit Bookmark</span></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editBookmarkTitle" data-i18n="modal.fields.title">Title:</label>
+                    <input type="text" id="editBookmarkTitle">
+                </div>
+                <div class="form-group">
+                    <label for="editBookmarkUrl" data-i18n="modal.fields.url">URL:</label>
+                    <input type="url" id="editBookmarkUrl">
+                </div>
+                <div class="form-group">
+                    <label for="editBookmarkFolder" data-i18n="modal.fields.folder">Folder:</label>
+                    <select id="editBookmarkFolder">
+                        <option value="" data-i18n="modal.fields.selectFolder">Select folder...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editBookmarkTags" data-i18n="modal.fields.tags">Tags (comma-separated):</label>
+                    <input type="text" id="editBookmarkTags">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="updateBookmark" class="btn btn-primary" data-i18n="modal.editBookmark.update">Update Bookmark</button>
+                <button id="deleteBookmark" class="btn btn-danger" data-i18n="modal.editBookmark.delete">Delete Bookmark</button>
+                <button id="cancelEditBookmark" class="btn btn-secondary" data-i18n="common.cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Header: branding and quick actions -->
+    <header>
+        <div class="logo-container">
+            <img src="/icons/icon48.png" alt="Pro Bookmark Manager Logo" id="logo">
+            <h1 data-i18n="header.title">Pro Bookmark Manager</h1>
+        </div>
+        <div class="header-controls">
+            <button id="addBookmarkBtn" class="header-btn" title="Add Bookmark" data-i18n-title="header.addBookmarkTooltip">
+                <svg class="icon-svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1.5C4.416 1.5 1.5 4.416 1.5 8C1.5 11.584 4.416 14.5 8 14.5C11.584 14.5 14.5 11.584 14.5 8C14.5 4.416 11.584 1.5 8 1.5ZM8 2.5C11.0435 2.5 13.5 4.9565 13.5 8C13.5 11.0435 11.0435 13.5 8 13.5C4.9565 13.5 2.5 11.0435 2.5 8C2.5 4.9565 4.9565 2.5 8 2.5ZM7.5 5V7.5H5V8.5H7.5V11H8.5V8.5H11V7.5H8.5V5H7.5Z"/>
+                </svg>
+            </button>
+            
+            <button id="settingsBtn" class="header-btn" title="Settings" data-i18n-title="header.settingsTooltip">
+                <svg class="icon-svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.37537 2.13333H7.62471L7.19471 3.85199L6.76337 3.98533C6.51203 4.06278 6.26852 4.16367 6.03604 4.28666L5.63671 4.49799L4.11671 3.58599L3.58604 4.11733L4.49804 5.63733L4.28671 6.03599C4.16348 6.26845 4.06237 6.51196 3.98471 6.76333L3.85204 7.19466L2.13337 7.62466V8.37533L3.85204 8.80533L3.98537 9.23666C4.06226 9.48911 4.16271 9.73155 4.28671 9.96399L4.49804 10.3633L3.58604 11.8833L4.11737 12.414L5.63737 11.502L6.03604 11.7133C6.26848 11.8369 6.51093 11.9376 6.76337 12.0153L7.19471 12.148L7.62471 13.8667H8.37537L8.80537 12.148L9.23671 12.0147C9.48805 11.9372 9.73157 11.8363 9.96404 11.7133L10.3634 11.502L11.8834 12.414L12.414 11.8827L11.502 10.3627L11.7134 9.96399C11.8369 9.73155 11.9376 9.48911 12.0154 9.23666L12.148 8.80533L13.8667 8.37533V7.62466L12.148 7.19466L12.0147 6.76333C11.9373 6.51198 11.8364 6.26847 11.7134 6.03599L11.502 5.63666L12.414 4.11666L11.8827 3.58599L10.3627 4.49799L9.96404 4.28666C9.73159 4.16344 9.48807 4.06233 9.23671 3.98466L8.80537 3.85199L8.37537 2.13333ZM10.3387 3.57999L11.5607 2.84666C11.6881 2.77024 11.8374 2.73857 11.9849 2.75669C12.1324 2.7748 12.2696 2.84167 12.3747 2.94666L13.0534 3.62533C13.1584 3.73046 13.2252 3.86766 13.2433 4.01513C13.2615 4.16261 13.2298 4.31191 13.1534 4.43933L12.42 5.66133C12.5667 5.93688 12.6867 6.22577 12.78 6.52799L14.162 6.87399C14.3062 6.91011 14.4342 6.99336 14.5256 7.11052C14.617 7.22769 14.6667 7.37204 14.6667 7.52066V8.47933C14.6667 8.62795 14.617 8.7723 14.5256 8.88947C14.4342 9.00663 14.3062 9.08988 14.162 9.12599L12.78 9.47199C12.6867 9.77422 12.5667 10.0631 12.42 10.3387L13.1534 11.5607C13.2298 11.6881 13.2615 11.8374 13.2433 11.9849C13.2252 12.1323 13.1584 12.2695 13.0534 12.3747L12.3747 13.0533C12.2696 13.1583 12.1324 13.2252 11.9849 13.2433C11.8374 13.2614 11.6881 13.2298 11.5607 13.1533L10.3387 12.42C10.0632 12.5667 9.77426 12.6867 9.47204 12.78L9.12604 14.162C9.08993 14.3062 9.00667 14.4341 8.88951 14.5256C8.77235 14.617 8.62799 14.6667 8.47937 14.6667H7.52071C7.37209 14.6667 7.22773 14.617 7.11057 14.5256C6.99341 14.4341 6.91015 14.3062 6.87404 14.162L6.52804 12.78C6.2285 12.6874 5.93834 12.5669 5.66137 12.42L4.43937 13.1533C4.31195 13.2298 4.16265 13.2614 4.01518 13.2433C3.8677 13.2252 3.73051 13.1583 3.62537 13.0533L2.94671 12.3747C2.84171 12.2695 2.77485 12.1323 2.75673 11.9849C2.73861 11.8374 2.77028 11.6881 2.84671 11.5607L3.58004 10.3387C3.43313 10.0617 3.3126 9.77153 3.22004 9.47199L1.83804 9.12599C1.69399 9.08991 1.56611 9.00676 1.47468 8.88973C1.38326 8.7727 1.33353 8.6285 1.33337 8.47999V7.52133C1.33338 7.37271 1.38304 7.22835 1.47448 7.11119C1.56591 6.99403 1.69388 6.91078 1.83804 6.87466L3.22004 6.52866C3.31337 6.22644 3.43337 5.93755 3.58004 5.66199L2.84671 4.43999C2.77028 4.31257 2.73861 4.16327 2.75673 4.0158C2.77485 3.86832 2.84171 3.73113 2.94671 3.62599L3.62537 2.94666C3.73051 2.84167 3.8677 2.7748 4.01518 2.75669C4.16265 2.73857 4.31195 2.77024 4.43937 2.84666L5.66137 3.57999C5.93693 3.43333 6.22582 3.31333 6.52804 3.21999L6.87404 1.83799C6.91013 1.69394 6.99328 1.56606 7.11031 1.47464C7.22733 1.38321 7.37154 1.33348 7.52004 1.33333H8.47871C8.62733 1.33333 8.77168 1.383 8.88885 1.47443C9.00601 1.56587 9.08926 1.69383 9.12537 1.83799L9.47137 3.21999C9.7736 3.31333 10.0625 3.43333 10.338 3.57999H10.3387ZM8.00004 9.86666C8.49511 9.86666 8.96991 9.67 9.31997 9.31993C9.67004 8.96986 9.86671 8.49507 9.86671 7.99999C9.86671 7.50492 9.67004 7.03013 9.31997 6.68006C8.96991 6.32999 8.49511 6.13333 8.00004 6.13333C7.50497 6.13333 7.03018 6.32999 6.68011 6.68006C6.33004 7.03013 6.13337 7.50492 6.13337 7.99999C6.13337 8.49507 6.33004 8.96986 6.68011 9.31993C7.03018 9.67 7.50497 9.86666 8.00004 9.86666ZM8.00004 10.6667C7.2928 10.6667 6.61452 10.3857 6.11442 9.88561C5.61433 9.38552 5.33337 8.70724 5.33337 7.99999C5.33337 7.29275 5.61433 6.61447 6.11442 6.11438C6.61452 5.61428 7.2928 5.33333 8.00004 5.33333C8.70728 5.33333 9.38556 5.61428 9.88566 6.11438C10.3858 6.61447 10.6667 7.29275 10.6667 7.99999C10.6667 8.70724 10.3858 9.38552 9.88566 9.88561C9.38556 10.3857 8.70728 10.6667 8.00004 10.6667Z"/>
+                </svg>
+            </button>
+            <button id="darkModeToggle" class="header-btn" title="Toggle Dark Mode" data-i18n-title="header.toggleDarkModeTooltip">
+                <i class="fas fa-moon"></i>
+            </button>
+            <select id="languageSelect" class="header-select" aria-label="Language selector" data-i18n-aria-label="language.selector" data-i18n-title="language.selector">
+                <option value="en" data-i18n-option="language.english">English</option>
+                <option value="ar" data-i18n-option="language.arabic">العربية</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Search Section: choose engine and search the web or open a URL -->
+        <div class="search-section">
+            <div class="search-engine-logo">
+                <img id="searchEngineLogo" src="/icons/google-logo.svg" alt="Search Engine Logo" class="search-logo-image"/>
+            </div>
+            <form id="searchForm" class="search-form" aria-label="Web search form">
+                <input type="text" id="searchInput" placeholder="Search or type a URL" autocomplete="off" autofocus aria-label="Search query" data-i18n-placeholder="search.placeholder">
+                <button type="submit" class="search-button" title="Search" data-i18n-title="search.submitTooltip">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <div id="suggestions-container"></div>
+        </div>
+
+        <!-- Quick Access Section: tabs for bookmarks, most visited, and recently added -->
+        <div class="quick-access-section" aria-label="Quick access section">
+            <div class="quick-access-tabs" role="tablist" aria-label="Quick access tabs">
+                <button class="quick-tab active" data-tab="bookmarks">
+                    <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3.6 9H20.4M3.6 15H20.4M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 9.61305 20.0518 7.32387 18.364 5.63604C16.6761 3.94821 14.3869 3 12 3C9.61305 3 7.32387 3.94821 5.63604 5.63604C3.94821 7.32387 3 9.61305 3 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M11.5 3C9.81538 5.69961 8.92224 8.81787 8.92224 12C8.92224 15.1821 9.81538 18.3004 11.5 21M12.5 3C14.1847 5.69961 15.0778 8.81787 15.0778 12C15.0778 15.1821 14.1847 18.3004 12.5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span data-i18n="tabs.bookmarks">Bookmarks</span>
+                </button>
+                <button class="quick-tab" data-tab="most-visited">
+                    <i class="fas fa-chart-line"></i> <span data-i18n="tabs.mostVisited">Most Visited</span>
+                </button>
+                <button class="quick-tab" data-tab="recently-added">
+                    <i class="fas fa-clock"></i> <span data-i18n="tabs.recentlyAdded">Recently Added</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bookmark Section -->
+        <div class="bookmark-section">
+            <!-- Breadcrumbs -->
+            <div id="breadcrumbs" class="breadcrumbs">
+                <span class="breadcrumb-item active" data-folder-id="root">
+                    <i class="fas fa-home"></i> <span data-i18n="breadcrumbs.home">Home</span>
+                </span>
+            </div>
+
+            <!-- Search and Filter Controls: narrow down and sort bookmarks -->
+            <div class="bookmark-controls">
+                <div class="search-filter-container">
+                    <div class="search-container">
+                        <input type="text" id="bookmarkSearchBar" placeholder="Search your bookmarks..." aria-label="Search bookmarks" data-i18n-placeholder="bookmarkSearch.placeholder">
+                    </div>
+                    <div class="filter-container">
+                        <select id="sortBy">
+                            <option value="name" data-i18n="sort.name">Sort by Name</option>
+                            <option value="date" data-i18n="sort.date">Sort by Date</option>
+                            <option value="url" data-i18n="sort.url">Sort by URL</option>
+                        </select>
+                        <select id="filterBy">
+                            <option value="all" data-i18n="filter.all">All Bookmarks</option>
+                            <option value="today" data-i18n="filter.today">Added Today</option>
+                            <option value="week" data-i18n="filter.week">This Week</option>
+                            <option value="month" data-i18n="filter.month">This Month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="view-controls">
+                    <button id="gridViewBtn" class="view-btn active" title="Grid View" data-i18n-title="view.gridTooltip">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button id="listViewBtn" class="view-btn" title="List View" data-i18n-title="view.listTooltip">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Folder Navigation -->
+            <div id="primaryFolderTabs" class="folder-tabs"></div>
+            <div id="subFolderTabs" class="folder-tabs sub-tabs"></div>
+            
+            <!-- Content Area: actual grids for bookmarks/most visited/recently added -->
+            <div id="contentArea" class="content-area">
+                <div id="bookmarkGrid" class="bookmark-grid">
+                    <!-- Bookmarks will be inserted here by JavaScript -->
+                </div>
+                <div id="mostVisitedGrid" class="bookmark-grid hidden">
+                    <!-- Most visited sites will be inserted here by JavaScript -->
+                </div>
+                <div id="recentlyAddedGrid" class="bookmark-grid hidden">
+                    <!-- Recently added bookmarks will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+        <p data-i18n="loading.message">Loading bookmarks...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Support Button: external link to support the project/author -->
+    <a href="https://ko-fi.com/O4O5114F0U" target="_blank" class="support-button">
+        <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2V4M14 2V4M16 8C16.2652 8 16.5196 8.10536 16.7071 8.29289C16.8946 8.48043 17 8.73478 17 9V17C17 18.0609 16.5786 19.0783 15.8284 19.8284C15.0783 20.5786 14.0609 21 13 21H7C5.93913 21 4.92172 20.5786 4.17157 19.8284C3.42143 19.0783 3 18.0609 3 17V9C3 8.73478 3.10536 8.48043 3.29289 8.29289C3.48043 8.10536 3.73478 8 4 8H18C19.0609 8 20.0783 8.42143 20.8284 9.17157C21.5786 9.92172 22 10.9391 22 12C22 13.0609 21.5783 14.0783 20.8284 14.8284C20.0783 15.5786 19.0609 16 18 16H17M6 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span data-i18n="support.cta">Support My Work</span>
+    </a>
+
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" class="back-to-top hidden" title="Go to top" data-i18n-title="backToTop.tooltip">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Main application script: event wiring, rendering, data loading -->
+    <script src="pro-bookmark-viewer.js"></script>
+</body>
+</html>
+
