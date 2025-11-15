@@ -480,9 +480,7 @@ body.rtl .search-button {
 
 /* Quick Access Section */
 .quick-access-section {
-    width: 100%;
-    max-width: 1200px;
-    margin-bottom: 24px;
+    width: auto;
 }
 
 .quick-access-tabs {
@@ -490,7 +488,6 @@ body.rtl .search-button {
     justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 16px;
 }
 
 .quick-tab {
@@ -794,6 +791,20 @@ body.rtl #bookmarkSearchBar {
     cursor: pointer;
 }
 
+.bookmark.icon {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1000%;
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    padding: 0;
+}
+
 body.rtl .bookmark {
     flex-direction: row;
     text-align: right;
@@ -832,6 +843,19 @@ body.rtl .bookmark {
     margin-right: 12px;
     flex-shrink: 0;
     border-radius: 6px;
+}
+
+.bookmark.icon img{
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    width: 24px;
+    height: 24px;
+}
+
+.bookmark.icon a{
+    display: flex;
+    align-items: center;
+    justify-content: center
 }
 
 body.rtl .bookmark img {
@@ -1336,6 +1360,34 @@ body.rtl .support-button svg {
 body.rtl .back-to-top {
     right: auto;
     left: 22px;
+}
+
+/* Most Visited List */
+div#most-visited-list {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    gap:15px
+}
+@media (max-width: 768px) {
+    div#most-visited-list {
+        max-width: 100%;
+        overflow: hidden;
+    }
+}
+ 
+
+
+.icon-container .bookmark-content .url {
+    max-width: 48px;
+    text-overflow: ellipsis !important;
+    font-size: 11px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-top: 10px;
 }
 
 @media (max-width: 480px) {

@@ -58,6 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const showRecentlyAdded = document.getElementById('showRecentlyAdded');
     const animationsEnabled = document.getElementById('animationsEnabled');
     
+    // Most Visited Sites List
+    const mostVisitedList = document.getElementById('most-visited-list');
+
     // State variables
     let allBookmarks = [];
     let bookmarkTree = [];
@@ -593,9 +596,9 @@ document.addEventListener('DOMContentLoaded', () => {
             renderFolderTabs(rootFolders, primaryFolderTabs, true);
             
             // Load most visited and recently added
-            if (settings.showMostVisited) {
+            //if (settings.showMostVisited) {
                 loadMostVisited();
-            }
+            //}
             if (settings.showRecentlyAdded) {
                 loadRecentlyAdded();
             }
@@ -626,7 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 chrome.topSites.get(resolve);
             });
             mostVisitedItems = mostVisited.slice(0, 12);
-            renderBookmarks(mostVisitedItems, mostVisitedGrid);
+            renderBookmarks(mostVisitedItems, mostVisitedList, 'icon');
         } catch (error) {
             console.error('Error loading most visited:', error);
         }
@@ -1084,7 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {Array} bookmarks
      * @param {HTMLElement} container
      */
-    const renderBookmarks = (bookmarks, container) => {
+    const renderBookmarks = (bookmarks, container, displayType = 'grid') => {
         if (!bookmarks || bookmarks.length === 0) {
             container.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 40px; opacity: 0.7;">
@@ -1115,7 +1118,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const displayUrl = fallbackHostname ? translate('bookmark.unknownHost') : hostname;
             const safeDisplayUrl = escapeHtml(displayUrl);
             
-            return `
+            if(displayType === 'grid'){
+                return `
                 <div class="bookmark" data-bookmark-id="${bookmark.id}" draggable="true">
                                         <img src="${faviconUrl}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;%23999&quot;><path d=&quot;M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z&quot;/></svg>'">
                     <div class="bookmark-content">
@@ -1135,6 +1139,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             `;
+            }else{
+                return `
+                <div class="icon-container">
+                    <div class="bookmark icon" data-bookmark-id="${bookmark.id}">
+                        <a href="${bookmark.url}" target="_blank" rel="noopener noreferrer" title="${bookmark.title}">
+                            <img src="${faviconUrl}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;%23999&quot;><path d=&quot;M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z&quot;/></svg>'">
+                        </a>
+                    </div> 
+                    <div class="bookmark-content">
+                        <div class="url">${safeDisplayUrl}</div>
+                    </div>
+                </div>
+                `;
+
+
+            }
         }).join('');
 
         // Add event listeners to bookmarks
