@@ -1470,4 +1470,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initialize Application ---
     initialize();
+
+    window.addEventListener('storage', e => {
+        toggleDarkMode();
+    });
 });
+
+
+
