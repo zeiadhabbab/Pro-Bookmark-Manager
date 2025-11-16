@@ -791,7 +791,31 @@ body.rtl #bookmarkSearchBar {
     cursor: pointer;
 }
 
-.bookmark.icon {
+.bookmark-icon {
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background-color: var(--card-background);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: 18px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast),
+        background-color var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.bookmark-icon img{
+    margin: 0  !important;
+    width: 24px;
+}
+
+.bookmark-icon.icon {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;

@@ -1140,13 +1140,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             }else{
+                debugger;
                 return `
                 <div class="icon-container">
-                    <div class="bookmark icon" data-bookmark-id="${bookmark.id}">
-                        <a href="${bookmark.url}" target="_blank" rel="noopener noreferrer" title="${bookmark.title}">
+                    <a href="${bookmark.url}" target="_blank" rel="noopener noreferrer" title="${bookmark.title}">
+                        <div class="bookmark-icon icon" data-bookmark-id="${bookmark.id}">
                             <img src="${faviconUrl}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;%23999&quot;><path d=&quot;M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z&quot;/></svg>'">
-                        </a>
-                    </div> 
+                        </div>  
+                    </a>
                     <div class="bookmark-content">
                         <div class="url">${safeDisplayUrl}</div>
                     </div>
