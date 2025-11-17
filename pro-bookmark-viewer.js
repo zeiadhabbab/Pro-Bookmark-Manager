@@ -1121,7 +1121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(displayType === 'grid'){
                 return `
                 <div class="bookmark" data-bookmark-id="${bookmark.id}" draggable="true">
-                                        <img src="${faviconUrl}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;%23999&quot;><path d=&quot;M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z&quot;/></svg>'">
+                    <img class="bookmark-favicon" src="${faviconUrl}" alt="">
                     <div class="bookmark-content">
                         <h3>${escapeHtml(bookmark.title) || translate('bookmark.untitled')}</h3>
                         <div class="url">${safeDisplayUrl}</div>
@@ -1140,12 +1140,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             }else{
-                debugger;
                 return `
                 <div class="icon-container">
                     <a href="${bookmark.url}" target="_blank" rel="noopener noreferrer" title="${bookmark.title}">
                         <div class="bookmark-icon icon" data-bookmark-id="${bookmark.id}">
-                            <img src="${faviconUrl}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;%23999&quot;><path d=&quot;M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z&quot;/></svg>'">
+                            <img class="bookmark-favicon" src="${faviconUrl}" alt="">
                         </div>  
                     </a>
                     <div class="bookmark-content">
@@ -1214,6 +1213,23 @@ document.addEventListener('DOMContentLoaded', () => {
             bookmarkElement.addEventListener('drop', handleDrop);
             bookmarkElement.addEventListener('dragend', handleDragEnd);
         });
+
+         applyFaviconFallbacks(container);
+    };
+
+
+    const FALLBACK_FAVICON =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' ry='6' fill='%23e5e7eb'/%3E%3Cpath d='M9 10h14v2H9zm0 5h10v2H9zm0 5h6v2H9z' fill='%234b5563'/%3E%3C/svg%3E";
+
+    const applyFaviconFallbacks = (root) => {
+    if (!root) return;
+    root.querySelectorAll('img.bookmark-favicon').forEach((img) => {
+        img.addEventListener('error', () => {
+        if (img.dataset.faviconFallbackApplied === '1') return;
+        img.dataset.faviconFallbackApplied = '1';
+        img.src = FALLBACK_FAVICON;
+        });
+    });
     };
 
     // --- Drag and Drop Functions ---
