@@ -35,7 +35,6 @@ Designed to help users browse, search, organize, and manage bookmarks in a beaut
 - Mini toast notifications  
 - Settings modal and bookmark modal  
 - LocalStorage caching  
-- Chrome APIs (bookmarks, topSites, tabs)
 
 ## 📦 Installation (Developer Mode)
 
@@ -90,8 +89,6 @@ pro-bookmark-viewer/
 ## 🛠️ Technologies Used
 - HTML5 / CSS3 / JavaScript
 - Chrome Extensions (MV3)
-- Chrome APIs (bookmarks, topSites, tabs, storage)
-- Google Search Suggest API
 - LocalStorage
 
 ## 🌐 Languages

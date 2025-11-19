@@ -1586,6 +1586,12 @@ div#most-visited-list {
     color: var(--brand-color);
 }
 
+div#suggestions-container {
+    max-width: 649px;
+    z-index: 1000;
+    text-align: left;
+}
+
 @media (max-width: 480px) {
     .back-to-top {
         bottom: 72px;

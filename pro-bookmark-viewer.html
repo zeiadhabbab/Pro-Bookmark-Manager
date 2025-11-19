@@ -31,15 +31,6 @@
                     </select>
                 </div>
                 <div class="setting-group">
-                    <label for="defaultSearchEngine" data-i18n="settings.defaultEngine">Default Search Engine:</label>
-                    <select id="defaultSearchEngine">
-                        <option value="google" selected data-i18n="settings.engine.google">Google</option>
-                        <option value="bing" data-i18n="settings.engine.bing">Bing</option>
-                        <option value="duckduckgo" data-i18n="settings.engine.duckduckgo">DuckDuckGo</option>
-                        <option value="yahoo" data-i18n="settings.engine.yahoo">Yahoo</option>
-                    </select>
-                </div>
-                <div class="setting-group">
                     <label for="showMostVisited" data-i18n="settings.showMostVisited">Show Most Visited:</label>
                     <input type="checkbox" id="showMostVisited" checked>
                 </div>
@@ -160,7 +151,7 @@
         <!-- Search Section: choose engine and search the web or open a URL -->
         <div class="search-section">
             <div class="search-engine-logo">
-                <img id="searchEngineLogo" src="/icons/google-logo.svg" alt="Search Engine Logo" class="search-logo-image"/>
+                <img id="searchEngineLogo" src="/icons/search.svg" alt="Search Engine Logo" class="search-logo-image"/>
             </div>
             <form id="searchForm" class="search-form" aria-label="Web search form">
                 <input type="text" id="searchInput" placeholder="Search or type a URL" autocomplete="off" autofocus aria-label="Search query" data-i18n-placeholder="search.placeholder">

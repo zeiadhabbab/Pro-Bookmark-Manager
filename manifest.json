@@ -16,11 +16,7 @@
   "permissions": [
     "bookmarks",
     "topSites",
-    "tabs"
-  ],
-
-  "host_permissions": [
-    "https://suggestqueries.google.com/*"
+    "search"
   ],
 
   "action": {
